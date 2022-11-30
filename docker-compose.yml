@@ -9,7 +9,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=123
       - RABBITMQ_DEFAULT_VHOST=ros
     ports:
-      - 1567:15672
+      - 15672:15672
 
   backend:
     build: backend/
