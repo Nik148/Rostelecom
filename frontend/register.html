@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container col-6 mt-5">
+    <form id="register" method="POST" enctype="application/x-www-form-urlencoded", action="/">
+        <div class="mb-2">
+            <label class="form-label" for="lastname">Фамилия</label>
+            <input class="form-control" id="lastname" type="text" name="lastname" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="firstname">Имя</label>
+            <input class="form-control" id="firstname" type="text" name="firstname" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="dad">Отчество</label>
+            <input class="form-control" id="dad" type="text" name="dad" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="phone">Телефон</label>
+            <input class="form-control" id="phone" type="number" name="phone" required>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="phone">Обращение</label>
+            <textarea class="form-control" name="text" cols="40" rows="5" required></textarea>
+        </div>
+        <input type="submit" name="loh" value="Отправить">
+    </form>
+    </div>
+</body>
+</html>

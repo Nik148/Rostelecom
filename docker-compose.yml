@@ -1,0 +1,62 @@
+version: '3.3'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=nik
+      - RABBITMQ_DEFAULT_PASS=123
+      - RABBITMQ_DEFAULT_VHOST=ros
+    ports:
+      - 1567:15672
+
+  backend:
+    build: backend/
+    container_name: tornado
+    command: bash -c ". venv/bin/activate
+             && python3 main.py"
+
+    environment:
+      - RABBIT_NAME=nik
+      - RABBIT_PASSWORD=123
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_VIRTUAL=ros
+      - RABBIT_PORT=5672
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+
+  servicedb:
+    build: servicedb/
+    container_name: fastapi
+    command: bash -c " . venv/bin/activate
+             && alembic revision --autogenerate -m 'init'
+             && alembic upgrade head
+             && uvicorn main:app --host=0.0.0.0 --reload"
+    environment:
+      - DB_URL=postgresql+asyncpg://postgres:123@db:5432/ros
+      - RABBIT_URL=amqp://nik:123@rabbitmq:5672/ros
+    depends_on:
+      - db
+      - rabbitmq
+    restart: on-failure
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=ros
+    ports:
+      - 5433:5432
+
+  frontend:
+    build: frontend/
+    container_name: front
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+    restart: on-failure
+
